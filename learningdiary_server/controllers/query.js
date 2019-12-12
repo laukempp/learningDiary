@@ -1,14 +1,5 @@
-// const Pool = require("pg").Pool;
-
-// const pool = new Pool({
-//   user: "postgres",
-//   host: "localhost",
-//   database: "paivakirja",
-//   password: "Sovelto1"
-// });
-
 const getTableData = (req, res, db) => {
-  db.select("*")
+  db.select()
     .from("topics")
     .then(items => {
       if (items.length) {
@@ -31,7 +22,7 @@ const postTableData = (req, res, db) => {
     startlearningdate,
     inprogress
   } = req.body;
-  const added = new Date();
+
   db("topics")
     .insert({
       id,

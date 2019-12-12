@@ -2,10 +2,10 @@ import React, { Component } from "react";
 import { Table, Button } from "reactstrap";
 import ModalForm from "./ModalForm";
 
-class DataTable extends Component {
+class TopicList extends Component {
   //Poistetaan topic (confirmation-ikkuna vahvistukseksi)
-  deleteItem = id => {
-    let confirmation = window.confirm("Delete item forever?");
+  deleteTopic = id => {
+    let confirmation = window.confirm("Delete topic forever?");
     if (confirmation) {
       fetch("/api/topics", {
         method: "delete",
@@ -17,34 +17,34 @@ class DataTable extends Component {
         })
       })
         .then(response => response.json())
-        .then(item => {
-          this.props.deleteItemFromState(id);
+        .then(topic => {
+          this.props.deleteTopic(id);
         })
         .catch(err => console.log(err));
     }
   };
 
   render() {
-    const items = this.props.items.map(item => {
+    const topics = this.props.topics.map(topic => {
       return (
-        //Delete- ja edit -nappi jokaisen itemin rivillä
-        <tr key={item.id}>
-          <th>{item.id}</th>
-          <td>{item.title}</td>
-          <td>{item.description}</td>
-          <td>{item.timetomaster}</td>
-          <td>{item.timespent}</td>
-          <td>{item.source}</td>
-          <td>{item.startlearningdate}</td>
-          <td>{item.inprogress}</td>
+        //Delete- ja edit -nappi jokaisen topicin rivillä
+        <tr key={topic.id}>
+          <th>{topic.id}</th>
+          <td>{topic.title}</td>
+          <td>{topic.description}</td>
+          <td>{topic.timetomaster}</td>
+          <td>{topic.timespent}</td>
+          <td>{topic.source}</td>
+          <td>{topic.startlearningdate}</td>
+          <td>{topic.inprogress}</td>
           <td>
             <div style={{ width: "110px" }}>
               <ModalForm
                 buttonLabel="Edit"
-                item={item}
-                updateState={this.props.updateState}
+                topic={topic}
+                updateTopic={this.props.updateTopic}
               />{" "}
-              <Button color="danger" onClick={() => this.deleteItem(item.id)}>
+              <Button color="danger" onClick={() => this.deleteTopic(topic.id)}>
                 Del
               </Button>
             </div>
@@ -67,10 +67,10 @@ class DataTable extends Component {
             <th>In progress</th>
           </tr>
         </thead>
-        <tbody>{items}</tbody>
+        <tbody>{topics}</tbody>
       </Table>
     );
   }
 }
 
-export default DataTable;
+export default TopicList;

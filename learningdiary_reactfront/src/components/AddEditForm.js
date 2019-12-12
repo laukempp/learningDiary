@@ -35,9 +35,9 @@ class AddEditForm extends React.Component {
       })
     })
       .then(response => response.json())
-      .then(item => {
-        if (Array.isArray(item)) {
-          this.props.addItemToState(item[0]);
+      .then(topic => {
+        if (Array.isArray(topic)) {
+          this.props.addTopic(topic[0]);
           this.props.toggle();
         } else {
           console.log("post request failure");
@@ -65,10 +65,10 @@ class AddEditForm extends React.Component {
       })
     })
       .then(response => response.json())
-      .then(item => {
-        if (Array.isArray(item)) {
-          // console.log(item[0])
-          this.props.updateState(item[0]);
+      .then(topic => {
+        if (Array.isArray(topic)) {
+          // console.log(topic[0])
+          this.props.updateTopic(topic[0]);
           this.props.toggle();
         } else {
           console.log("failure");
@@ -78,8 +78,8 @@ class AddEditForm extends React.Component {
   };
 
   componentDidMount() {
-    // if item exists, populate the state with proper data
-    if (this.props.item) {
+    // if topic exists, populate the state with proper data
+    if (this.props.topic) {
       const {
         id,
         title,
@@ -89,7 +89,7 @@ class AddEditForm extends React.Component {
         source,
         startlearningdate,
         inprogress
-      } = this.props.item;
+      } = this.props.topic;
       this.setState({
         id,
         title,
@@ -106,7 +106,7 @@ class AddEditForm extends React.Component {
   render() {
     return (
       <Form
-        onSubmit={this.props.item ? this.submitFormEdit : this.submitFormAdd}
+        onSubmit={this.props.topic ? this.submitFormEdit : this.submitFormAdd}
       >
         <FormGroup>
           <Label for="title">Title</Label>
@@ -150,6 +150,7 @@ class AddEditForm extends React.Component {
             id="timespent"
             onChange={this.onChange}
             value={this.state.timespent === null ? "" : this.state.timespent}
+            placeholder="e.g. 2 weeks"
           />
         </FormGroup>
         <FormGroup>
@@ -160,11 +161,11 @@ class AddEditForm extends React.Component {
             id="source"
             onChange={this.onChange}
             value={this.state.source === null ? "" : this.state.source}
-            placeholder="ex. 555-555-5555"
+            placeholder="Online course, project etc.."
           />
         </FormGroup>
         <FormGroup>
-          <Label for="startlearningdate">startlearningdate</Label>
+          <Label for="startlearningdate">Started learning on</Label>
           <Input
             type="text"
             name="startlearningdate"
@@ -175,11 +176,11 @@ class AddEditForm extends React.Component {
                 ? ""
                 : this.state.startlearningdate
             }
-            placeholder="City, State"
+            placeholder="e.g. November"
           />
         </FormGroup>
         <FormGroup>
-          <Label for="inprogress">inprogress</Label>
+          <Label for="inprogress">Still in progress?</Label>
           <Input
             type="text"
             name="inprogress"

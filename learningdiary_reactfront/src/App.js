@@ -1,44 +1,47 @@
 import React, { Component } from "react";
 import ModalForm from "./components/ModalForm";
-import DataTable from "./components/TopicList";
+import TopicList from "./components/TopicList";
 import { Container, Row, Col } from "reactstrap";
 
 class App extends Component {
   state = {
-    items: []
+    topics: []
   };
   //Haetaan topicit
-  getItems() {
+  getTopics() {
     fetch("/api/topics")
       .then(res => res.json())
-      .then(items => this.setState({ items }))
+      .then(topics => this.setState({ topics }))
       .catch(err => console.log(err));
   }
-  //Hyödynnetään Post-funktiossa
-  addItemToState = item => {
+  //Käytetään post:ssa
+  addTopic = topic => {
     this.setState(prevState => ({
-      items: [...prevState.items, item]
+      topics: [...prevState.topics, topic]
     }));
   };
 
-  updateState = item => {
-    const itemIndex = this.state.items.findIndex(data => data.id === item.id);
+  //Käytetään put:ssa
+  updateTopic = topic => {
+    const topicIndex = this.state.topics.findIndex(
+      data => data.id === topic.id
+    );
     const newArray = [
-      ...this.state.items.slice(0, itemIndex),
-      item,
-      ...this.state.items.slice(itemIndex + 1)
+      ...this.state.topics.slice(0, topicIndex),
+      topic,
+      ...this.state.topics.slice(topicIndex + 1)
     ];
-    this.setState({ items: newArray });
+    this.setState({ topics: newArray });
   };
-  //Hyödynnetään Delete-funktiossa
-  deleteItemFromState = id => {
-    const updatedItems = this.state.items.filter(item => item.id !== id);
-    this.setState({ items: updatedItems });
+  //Hyödynnetään Delete:ssä
+  deleteTopic = id => {
+    const updatedTopics = this.state.topics.filter(topic => topic.id !== id);
+    this.setState({ topics: updatedTopics });
   };
 
-  //Haetaan topicit initial loadissa
+  //Haetaan kaikki topicit sivun initial loadissa
   componentDidMount() {
-    this.getItems();
+    this.getTopics();
   }
 
   render() {
@@ -51,19 +54,16 @@ class App extends Component {
         </Row>
         <Row>
           <Col>
-            <DataTable
-              items={this.state.items}
-              updateState={this.updateState}
-              deleteItemFromState={this.deleteItemFromState}
+            <TopicList
+              topics={this.state.topics}
+              updateTopic={this.updateTopic}
+              deleteTopic={this.deleteTopic}
             />
           </Col>
         </Row>
         <Row>
           <Col>
-            <ModalForm
-              buttonLabel="Add Item"
-              addItemToState={this.addItemToState}
-            />
+            <ModalForm buttonLabel="Add Topic" addTopic={this.addTopic} />
           </Col>
         </Row>
       </Container>

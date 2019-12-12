@@ -3,20 +3,21 @@ import { Button, Modal, ModalHeader, ModalBody } from "reactstrap";
 import AddEditForm from "./AddEditForm";
 
 class ModalForm extends Component {
-  //Määritetään modal stateen ja oletusarvoksi
+  //Määritetään modalille oletusarvoksi "false" eli ei näkyvissä.
   state = {
     modal: false
   };
-
-  toggle = () => {
+  //Funktio, jolla saadaan modal näkyviin
+  toggleModal = () => {
     this.setState(prevState => ({
       modal: !prevState.modal
     }));
   };
 
   render() {
+    //Modalin sulkemisnäppäin (togglee modalin pois näkyvistä)
     const closeBtn = (
-      <button className="close" onClick={this.toggle}>
+      <button className="close" onClick={this.toggleModal}>
         &times;
       </button>
     );
@@ -26,28 +27,31 @@ class ModalForm extends Component {
     let button = "";
     let title = "";
 
+    //Editille speksit
     if (label === "Edit") {
       button = (
         <Button
           color="warning"
-          onClick={this.toggle}
+          onClick={this.toggleModal}
           style={{ float: "left", marginRight: "10px" }}
         >
           {label}
         </Button>
       );
-      title = "Edit Item";
-    } else {
+      title = "Edit Topic";
+    }
+    // Add-buttonille speksit
+    else {
       button = (
         <Button
           color="success"
-          onClick={this.toggle}
+          onClick={this.toggleModal}
           style={{ float: "left", marginRight: "10px" }}
         >
           {label}
         </Button>
       );
-      title = "Add New Item";
+      title = "Add New Topic";
     }
 
     return (
@@ -55,18 +59,18 @@ class ModalForm extends Component {
         {button}
         <Modal
           isOpen={this.state.modal}
-          toggle={this.toggle}
+          toggleModal={this.toggleModal}
           className={this.props.className}
         >
-          <ModalHeader toggle={this.toggle} close={closeBtn}>
+          <ModalHeader toggle={this.toggleModal} close={closeBtn}>
             {title}
           </ModalHeader>
           <ModalBody>
             <AddEditForm
-              addItemToState={this.props.addItemToState}
-              updateState={this.props.updateState}
-              toggle={this.toggle}
-              item={this.props.item}
+              addTopic={this.props.addTopic}
+              updateTopic={this.props.updateTopic}
+              toggleModal={this.toggleModal}
+              topic={this.props.topic}
             />
           </ModalBody>
         </Modal>

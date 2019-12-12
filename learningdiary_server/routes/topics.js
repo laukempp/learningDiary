@@ -1,16 +1,7 @@
 var express = require("express");
 var router = express.Router();
 const query = require("../controllers/query");
-
-var db = require("knex")({
-  client: "pg",
-  connection: {
-    host: "localhost",
-    user: "postgres",
-    password: "Sovelto1",
-    database: "postgres"
-  }
-});
+const db = require("../config/config");
 
 /* GET users listing. */
 // router.get("/", function(req, res, next) {
